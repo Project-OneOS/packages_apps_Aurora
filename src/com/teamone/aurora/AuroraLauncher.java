@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Paranoid Android
+ * Copyright (C) 2019 The OneOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paranoid.launcher;
+package com.teamone.aurora;
 
 import com.android.launcher3.Launcher;
 
-public class ParanoidLauncher extends Launcher {
+public class AuroraLauncher extends Launcher {
 
-    public ParanoidLauncher() {
-        setLauncherCallbacks(new ParanoidLauncherCallbacks(this));
+    public AuroraLauncher() {
+        setLauncherCallbacks(new AuroraLauncherCallbacks(this));
     }
 }

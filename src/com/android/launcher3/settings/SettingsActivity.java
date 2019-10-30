@@ -41,8 +41,8 @@ import com.android.launcher3.graphics.GridOptionsProvider;
 import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.util.SecureSettingsObserver;
 
-import com.paranoid.launcher.ParanoidLauncherCallbacks;
-import com.paranoid.launcher.ParanoidUtils;
+import com.teamone.aurora.AuroraLauncherCallbacks;
+import com.teamone.aurora.AuroraUtils;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
@@ -238,8 +238,8 @@ public class SettingsActivity extends Activity
                     return FeatureFlags.showFlagTogglerUi(getContext()) ||
                             PluginManagerWrapper.hasPlugins(getContext());
                 case MINUS_ONE_KEY:
-                    return ParanoidUtils.hasPackageInstalled(getActivity(),
-                            ParanoidLauncherCallbacks.SEARCH_PACKAGE);
+                    return AuroraUtils.hasPackageInstalled(getActivity(),
+                            AuroraLauncherCallbacks.SEARCH_PACKAGE);
                 case GRID_OPTIONS_PREFERENCE_KEY:
                     return Utilities.isDevelopersOptionsEnabled(getContext()) &&
                             Utilities.IS_DEBUG_DEVICE &&

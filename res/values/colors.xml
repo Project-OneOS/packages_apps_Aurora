@@ -37,4 +37,6 @@
 
     <color name="all_apps_bg_hand_fill">#E5E5E5</color>
     <color name="all_apps_bg_hand_fill_dark">#9AA0A6</color>
+    
+    <color name="icon_home_background">#FF93b963</color>
 </resources>

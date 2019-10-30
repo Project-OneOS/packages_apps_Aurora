@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Paranoid Android
+ * Copyright (C) 2019 The OneOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.paranoid.launcher;
+package com.teamone.aurora;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,11 +39,11 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-public class ParanoidLauncherCallbacks implements LauncherCallbacks,
+public class AuroraLauncherCallbacks implements LauncherCallbacks,
         SharedPreferences.OnSharedPreferenceChangeListener, OnChangeListener {
     public static final String SEARCH_PACKAGE = "com.google.android.googlequicksearchbox";
 
-    private final ParanoidLauncher mLauncher;
+    private final AuroraLauncher mLauncher;
 
     private OverlayCallbackImpl mOverlayCallbacks;
     private LauncherClient mLauncherClient;
@@ -55,7 +55,7 @@ public class ParanoidLauncherCallbacks implements LauncherCallbacks,
 
     private final Bundle mUiInformation = new Bundle();
 
-    public ParanoidLauncherCallbacks(ParanoidLauncher launcher) {
+    public AuroraLauncherCallbacks(AuroraLauncher launcher) {
         mLauncher = launcher;
     }
 
@@ -217,7 +217,7 @@ public class ParanoidLauncherCallbacks implements LauncherCallbacks,
     }
 
     private ClientOptions getClientOptions(SharedPreferences prefs) {
-        boolean hasPackage = ParanoidUtils.hasPackageInstalled(mLauncher, SEARCH_PACKAGE);
+        boolean hasPackage = AuroraUtils.hasPackageInstalled(mLauncher, SEARCH_PACKAGE);
         boolean isEnabled = prefs.getBoolean(SettingsActivity.MINUS_ONE_KEY, true);
         int canUse = hasPackage && isEnabled ? 1 : 0;
         return new ClientOptions(canUse | 2 | 4 | 8);
