@@ -221,11 +221,11 @@ public class DeviceProfile {
             // Note: This calculation was created after noticing a pattern in the design spec.
             int extraSpace = getCellSize().y - iconSizePx - iconDrawablePaddingPx * 2
                     - verticalDragHandleSizePx;
-            hotseatBarSizePx += extraSpace;
-            hotseatBarBottomPaddingPx += extraSpace;
+            //hotseatBarSizePx += extraSpace;
+            //hotseatBarBottomPaddingPx += extraSpace;
 
             // Recalculate the available dimensions using the new hotseat size.
-            updateAvailableDimensions(dm, res);
+            //updateAvailableDimensions(dm, res);
         }
         updateWorkspacePadding();
 
@@ -294,6 +294,16 @@ public class DeviceProfile {
                 + topBottomPadding * 2;
     }
 
+     /**
+     * Adjusts the profile so that the icons in app drawer have wider padding.
+    */
+    private void adjustVerticalBarLayoutLabels() {
+        int topBottomPadding = allAppsIconDrawablePaddingPx * (isVerticalBarLayout() ? 2 : 1);
+        allAppsCellHeightPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx
+                + Utilities.calculateTextHeight(allAppsIconTextSizePx)
+                + topBottomPadding * 2;
+    }
+
     private void updateAvailableDimensions(DisplayMetrics dm, Resources res) {
         updateIconSize(1f, res, dm);
 
@@ -332,11 +342,16 @@ public class DeviceProfile {
         allAppsIconTextSizePx = iconTextSizePx;
         allAppsIconSizePx = iconSizePx;
         allAppsIconDrawablePaddingPx = iconDrawablePaddingPx;
-        allAppsCellHeightPx = getCellSize().y;
+        // all apps should have constant row height and not follow workspace
+        int topBottomPadding = allAppsIconDrawablePaddingPx * (isVerticalBarLayout() ? 2 : 1);
+        allAppsCellHeightPx = allAppsIconSizePx + allAppsIconDrawablePaddingPx
+                + Utilities.calculateTextHeight(allAppsIconTextSizePx)
+                + topBottomPadding * 2;
 
         if (isVerticalLayout) {
             // Always hide the Workspace text with vertical bar layout.
-            adjustToHideWorkspaceLabels();
+            adjustVerticalBarLayoutLabels();
+            iconDrawablePaddingPx = cellYPadding;
         }
 
         // Hotseat

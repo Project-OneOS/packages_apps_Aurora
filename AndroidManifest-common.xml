@@ -19,7 +19,10 @@
 -->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.launcher3">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.android.launcher3"
+    coreApp="true"
+    android:sharedUserId="android.uid.system">
 
     <!--
     The manifest defines the common entries that should be present in any derivative of Launcher3.
@@ -44,6 +47,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="android.permission.STATUS_BAR" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.MANAGE_USERS" />
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.DEVICE_POWER" />
 
 
     <!--
@@ -76,7 +84,9 @@
         android:label="@string/derived_app_name"
         android:largeHeap="@bool/config_largeHeap"
         android:restoreAnyVersion="true"
-        android:supportsRtl="true" >
+        android:supportsRtl="true"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:icon" >
 
         <!-- Intent received used to install shortcuts from other applications -->
         <receiver
@@ -167,14 +177,47 @@
         -->
         <activity
             android:name="com.android.launcher3.settings.SettingsActivity"
-            android:label="@string/settings_button_text"
+            android:label="@string/settings_title"
             android:theme="@android:style/Theme.DeviceDefault.Settings"
+            android:parentActivityName="com.android.launcher3.Launcher"
             android:autoRemoveFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- Icons -->
+        <activity
+            android:name="com.android.launcher3.settings.SettingsIcons"
+            android:label="@string/icons_category_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings"
+            android:autoRemoveFromRecents="true"
+            android:parentActivityName="com.android.launcher3.settings.SettingsActivity" />
+
+        <!-- App drawer -->
+        <activity
+            android:name="com.android.launcher3.settings.SettingsAppDrawer"
+            android:label="@string/app_drawer_category_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings"
+            android:autoRemoveFromRecents="true"
+            android:parentActivityName="com.android.launcher3.settings.SettingsActivity" />
+
+        <!-- Homescreen -->
+        <activity
+            android:name="com.android.launcher3.settings.SettingsHomescreen"
+            android:label="@string/home_category_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings"
+            android:autoRemoveFromRecents="true"
+            android:parentActivityName="com.android.launcher3.settings.SettingsActivity" />
+
+        <!-- Misc settings -->
+        <activity
+            android:name="com.android.launcher3.settings.SettingsMisc"
+            android:label="@string/misc_category_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings"
+            android:autoRemoveFromRecents="true"
+            android:parentActivityName="com.android.launcher3.settings.SettingsActivity" />
 
         <provider
             android:name="com.android.launcher3.testing.TestInformationProvider"

@@ -33,7 +33,8 @@ endif
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, src_plugins)
 
-LOCAL_SDK_VERSION := current
+LOCAL_PRIVATE_PLATFORM_APIS := true
+LOCAL_CERTIFICATE := platform
 LOCAL_MIN_SDK_VERSION := 28
 LOCAL_MODULE := LauncherPluginLib
 
@@ -82,8 +83,8 @@ LOCAL_PROTOC_OPTIMIZE_TYPE := nano
 LOCAL_PROTOC_FLAGS := --proto_path=$(LOCAL_PATH)/protos/ --proto_path=$(LOCAL_PATH)/proto_overrides/
 LOCAL_PROTO_JAVA_OUTPUT_PARAMS := enum_style=java
 
-LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
+LOCAL_PRIVATE_PLATFORM_APIS := true
+LOCAL_CERTIFICATE := platform
 LOCAL_MODULE := Launcher3CommonDepsLib
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_MANIFEST_FILE := AndroidManifest-common.xml
@@ -100,6 +101,8 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_STATIC_ANDROID_LIBRARIES := \
     Launcher3CommonDepsLib \
     SecondaryDisplayLauncherLib
+
+LOCAL_STATIC_ANDROID_LIBRARIES := Launcher3CommonDepsLib
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, src) \
     $(call all-java-files-under, src_shortcuts_overrides) \
@@ -110,8 +113,8 @@ LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 # Proguard is disable for testing. Derivarive prjects to keep proguard enabled
 LOCAL_PROGUARD_ENABLED := disabled
 
-LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
+LOCAL_PRIVATE_PLATFORM_APIS := true
+LOCAL_CERTIFICATE := platform
 LOCAL_PACKAGE_NAME := Launcher3
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_PRODUCT_MODULE := true
@@ -121,6 +124,12 @@ LOCAL_REQUIRED_MODULES := privapp_whitelist_com.android.launcher3
 LOCAL_FULL_LIBS_MANIFEST_FILES := $(LOCAL_PATH)/AndroidManifest-common.xml
 
 LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.android.launcher3.*
+
+LOCAL_AIDL_INCLUDES := src/com/google/android/libraries/launcherclient
+
+LOCAL_SRC_FILES += \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlayCallback.aidl \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlay.aidl
 
 include $(BUILD_PACKAGE)
 
@@ -141,8 +150,8 @@ LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/go/res
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
-LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
+LOCAL_PRIVATE_PLATFORM_APIS := true
+LOCAL_CERTIFICATE := platform
 LOCAL_PACKAGE_NAME := Launcher3Go
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_PRODUCT_MODULE := true
@@ -155,6 +164,13 @@ LOCAL_FULL_LIBS_MANIFEST_FILES := \
 
 LOCAL_MANIFEST_FILE := go/AndroidManifest.xml
 LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.android.launcher3.*
+
+LOCAL_AIDL_INCLUDES := src/com/google/android/libraries/launcherclient
+
+LOCAL_SRC_FILES += \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlayCallback.aidl \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlay.aidl
+
 include $(BUILD_PACKAGE)
 
 #
@@ -191,8 +207,19 @@ LOCAL_RESOURCE_DIR := \
     $(LOCAL_PATH)/quickstep/recents_ui_overrides/res
 LOCAL_PROGUARD_ENABLED := disabled
 
+LOCAL_FULL_LIBS_MANIFEST_FILES := \
+    $(LOCAL_PATH)/quickstep/AndroidManifest.xml \
+    $(LOCAL_PATH)/AndroidManifest.xml \
+    $(LOCAL_PATH)/AndroidManifest-common.xml
 
 LOCAL_MANIFEST_FILE := quickstep/AndroidManifest.xml
+
+LOCAL_AIDL_INCLUDES := src/com/google/android/libraries/launcherclient
+
+LOCAL_SRC_FILES += \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlayCallback.aidl \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlay.aidl
+
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 #
@@ -213,6 +240,7 @@ else
 endif
 LOCAL_PACKAGE_NAME := Aurora
 LOCAL_PRIVILEGED_MODULE := true
+LOCAL_CERTIFICATE := platform
 LOCAL_PRODUCT_MODULE := true
 LOCAL_OVERRIDES_PACKAGES := Home Launcher2 Launcher3
 LOCAL_REQUIRED_MODULES := privapp_whitelist_com.android.launcher3
@@ -222,14 +250,20 @@ LOCAL_RESOURCE_DIR := \
     $(LOCAL_PATH)/quickstep/recents_ui_overrides/res
 
 LOCAL_FULL_LIBS_MANIFEST_FILES := \
+    $(LOCAL_PATH)/quickstep/AndroidManifest.xml \
     $(LOCAL_PATH)/AndroidManifest.xml \
     $(LOCAL_PATH)/AndroidManifest-common.xml
 
 LOCAL_MANIFEST_FILE := quickstep/AndroidManifest.xml
 LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.android.launcher3.*
 
-include $(BUILD_PACKAGE)
+LOCAL_AIDL_INCLUDES := src/com/google/android/libraries/launcherclient
 
+LOCAL_SRC_FILES += \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlayCallback.aidl \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlay.aidl
+
+include $(BUILD_PACKAGE)
 
 #
 # Build rule for Launcher3 Go app with quickstep for Android Go devices.
@@ -322,6 +356,13 @@ LOCAL_FULL_LIBS_MANIFEST_FILES := \
 
 LOCAL_MANIFEST_FILE := quickstep/AndroidManifest.xml
 LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.android.launcher3.*
+
+LOCAL_AIDL_INCLUDES := src/com/google/android/libraries/launcherclient
+
+LOCAL_SRC_FILES += \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlayCallback.aidl \
+    src/com/google/android/libraries/launcherclient/ILauncherOverlay.aidl
+
 include $(BUILD_PACKAGE)
 
 

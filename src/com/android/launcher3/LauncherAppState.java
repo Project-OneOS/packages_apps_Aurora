@@ -40,6 +40,8 @@ import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SecureSettingsObserver;
 
+import com.android.internal.util.aospextended.AEXUtils;
+
 public class LauncherAppState {
 
     public static final String ACTION_FORCE_ROLOAD = "force-reload-launcher";
@@ -54,6 +56,10 @@ public class LauncherAppState {
     private final WidgetPreviewLoader mWidgetCache;
     private final InvariantDeviceProfile mInvariantDeviceProfile;
     private final SecureSettingsObserver mNotificationDotsObserver;
+
+    private HomeKeyWatcher mHomeKeyListener = null;
+    private boolean mNeedsRestart;
+    private boolean mIsSearchAppAvailable;
 
     public static LauncherAppState getInstance(final Context context) {
         return INSTANCE.get(context);
@@ -75,6 +81,8 @@ public class LauncherAppState {
         Log.v(Launcher.TAG, "LauncherAppState initiated");
         Preconditions.assertUIThread();
         mContext = context;
+
+        setSearchAppAvailable(AEXUtils.isPackageInstalled(context, Utilities.SEARCH_PACKAGE));
 
         mInvariantDeviceProfile = InvariantDeviceProfile.INSTANCE.get(mContext);
         mIconCache = new IconCache(mContext, mInvariantDeviceProfile);
@@ -110,6 +118,31 @@ public class LauncherAppState {
                     newNotificationSettingsObserver(mContext, this::onNotificationSettingsChanged);
             mNotificationDotsObserver.register();
             mNotificationDotsObserver.dispatchOnChange();
+        }
+
+        mHomeKeyListener = new HomeKeyWatcher(mContext);
+    }
+
+    public void setNeedsRestart() {
+        if (mNeedsRestart) {
+            // another pref change already called a restart
+            return;
+        }
+        mNeedsRestart = true;
+        mHomeKeyListener.startWatch();
+        mHomeKeyListener.setOnHomePressedListener(() -> {
+            mHomeKeyListener.stopWatch();
+            Utilities.restart(mContext);
+            // we're killing the whole process so no need to set mNeedsRestart to false again
+        });
+    }
+
+    public void checkIfRestartNeeded() {
+        // we destroyed Settings activity with the back button
+        // so we force a restart now if needed without waiting for home button press
+        if (mNeedsRestart) {
+            mHomeKeyListener.stopWatch();
+            Utilities.restart(mContext);
         }
     }
 
@@ -182,4 +215,13 @@ public class LauncherAppState {
             return (LauncherProvider) cl.getLocalContentProvider();
         }
     }
+
+    public void setSearchAppAvailable(boolean available) {
+        mIsSearchAppAvailable = available;
+    }
+
+    public boolean isSearchAppAvailable() {
+        return mIsSearchAppAvailable;
+    }
+
 }
