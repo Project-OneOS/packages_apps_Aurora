@@ -48,7 +48,7 @@
         attributes and intent filters the same
         -->
         <activity
-            android:name="com.teamone.aurora.AuroraLauncher"
+            android:name="com.android.launcher3.Launcher"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"
@@ -58,7 +58,6 @@
             android:resizeableActivity="true"
             android:resumeWhilePausing="true"
             android:taskAffinity=""
-            android:excludeFromRecents="true"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

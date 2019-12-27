@@ -40,7 +40,7 @@ import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SecureSettingsObserver;
 
-import com.android.internal.util.aospextended.AEXUtils;
+import com.android.internal.util.custom.ONEUtils;
 
 public class LauncherAppState {
 
@@ -82,7 +82,7 @@ public class LauncherAppState {
         Preconditions.assertUIThread();
         mContext = context;
 
-        setSearchAppAvailable(AEXUtils.isPackageInstalled(context, Utilities.SEARCH_PACKAGE));
+        setSearchAppAvailable(ONEUtils.isPackageInstalled(context, Utilities.SEARCH_PACKAGE));
 
         mInvariantDeviceProfile = InvariantDeviceProfile.INSTANCE.get(mContext);
         mIconCache = new IconCache(mContext, mInvariantDeviceProfile);

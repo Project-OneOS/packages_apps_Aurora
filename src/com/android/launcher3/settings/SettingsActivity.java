@@ -17,7 +17,6 @@
 package com.android.launcher3.settings;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.ComponentName;
@@ -35,9 +34,6 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.util.SecureSettingsObserver;
-
-import com.teamone.aurora.AuroraLauncherCallbacks;
-import com.teamone.aurora.AuroraUtils;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
@@ -58,10 +54,6 @@ public class SettingsActivity extends Activity
     public static final String EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     public static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
-
-    public static final String GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options";
-
-    public static final String MINUS_ONE_KEY = "pref_enable_minus_one";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,54 +158,8 @@ public class SettingsActivity extends Activity
          * will remove that preference from the list.
          */
         protected boolean initPreference(Preference preference) {
-            switch (preference.getKey()) {
-                case NOTIFICATION_DOTS_PREFERENCE_KEY:
-                    if (!Utilities.ATLEAST_OREO ||
-                            getContext().getSystemService(ActivityManager.class).isLowRamDevice() ||
-                            !getResources().getBoolean(R.bool.notification_dots_enabled)) {
-                        return false;
-                    }
-
-                    // Listen to system notification dot settings while this UI is active.
-                    mNotificationDotsObserver = newNotificationSettingsObserver(
-                            getActivity(), (NotificationDotsPreference) preference);
-                    mNotificationDotsObserver.register();
-                    // Also listen if notification permission changes
-                    mNotificationDotsObserver.getResolver().registerContentObserver(
-                            Settings.Secure.getUriFor(NOTIFICATION_ENABLED_LISTENERS), false,
-                            mNotificationDotsObserver);
-                    mNotificationDotsObserver.dispatchOnChange();
-                    return true;
-
-                case ADD_ICON_PREFERENCE_KEY:
-                    return Utilities.ATLEAST_OREO;
-
-                case ALLOW_ROTATION_PREFERENCE_KEY:
-                    if (getResources().getBoolean(R.bool.allow_rotation)) {
-                        // Launcher supports rotation by default. No need to show this setting.
-                        return false;
-                    }
-                    // Initialize the UI once
-                    preference.setDefaultValue(getAllowRotationDefaultValue());
-                    return true;
-
-                case FLAGS_PREFERENCE_KEY:
-                    // Only show flag toggler UI if this build variant implements that.
-                    return FeatureFlags.showFlagTogglerUi(getContext());
-
-                case DEVELOPER_OPTIONS_KEY:
-                    // Show if plugins are enabled or flag UI is enabled.
-                    return FeatureFlags.showFlagTogglerUi(getContext()) ||
-                            PluginManagerWrapper.hasPlugins(getContext());
-                case MINUS_ONE_KEY:
-                    return AuroraUtils.hasPackageInstalled(getActivity(),
-                            AuroraLauncherCallbacks.SEARCH_PACKAGE);
-                case GRID_OPTIONS_PREFERENCE_KEY:
-                    return Utilities.isDevelopersOptionsEnabled(getContext()) &&
-                            Utilities.IS_DEBUG_DEVICE &&
-                            Utilities.existsStyleWallpapers(getContext());
-            }
-
+            //switch (preference.getKey()) {
+            //}
             return true;
         }
 
@@ -255,3 +201,4 @@ public class SettingsActivity extends Activity
         }
     }
 }
+
