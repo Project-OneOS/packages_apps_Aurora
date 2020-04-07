@@ -38,7 +38,7 @@ import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.SecureSettingsObserver;
 
-import com.android.internal.util.custom.ONEUtils;
+import com.android.internal.util.one.ONEUtils;
 
 public class LauncherAppState {
 
